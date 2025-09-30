@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XIAOBA - Profile</title>
+    <link rel="stylesheet" href="../CSS/fontawesome-free-6.4.0-web/css/all.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 85%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        .recommendation {
+            padding: 16px 24px;
+            background: linear-gradient(to right, #fff5e6, #ffe6cc);
+            border-bottom: 1px solid #ffd699;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: #cc5500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .profile-section {
+            padding: 30px;
+            display: flex;
+            align-items: flex-start;
+            background: linear-gradient(135deg, #fff9f2 0%, #fff2e6 100%);
+            border-bottom: 1px solid #ffe6cc;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-section::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 153, 0, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .profile-section::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 153, 0, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 6px 15px rgba(255, 123, 0, 0.3);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info {
+            margin-left: 24px;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .username {
+            font-size: 28px;
+            font-weight: 700;
+            color: #cc5500;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .bio {
+            color: #663300;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            border-left: 4px solid #ff7b00;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            font-style: italic;
+            backdrop-filter: blur(5px);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .follow-btn {
+            background: #ff7b00;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(255, 123, 0, 0.3);
+        }
+        .post {
+            padding: 28px;
+            background: white;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: #050505;
+            font-size: 20px;
+            color: #cc5500;
+        }
+
+        .post-time {
+            color: #8c8c8c;
+            font-size: 14px;
+        }
+
+        .post-content {
+            margin-bottom: 18px;
+            line-height: 1.7;
+            color: #333;
+            font-size: 17px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #ff7b00;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e4e6eb;
+            padding-top: 18px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #65676b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .action-btn:hover {
+            color: #ff7b00;
+            background-color: #f2f3f5;
+        }
+
+        .action-btn.active {
+            color: #ff7b00;
+        }
+
+        .comments {
+            margin-top: 24px;
+        }
+
+        .comment {
+            background: #f0f2f5;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #65676b;
+            font-size: 14px;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: #cc5500;
+        }
+
+        .comment-content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .new-comment {
+            margin-top: 24px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .comment-input {
+            flex: 1;
+            background: #f0f2f5;
+            border: 1px solid #dddfe2;
+            border-radius: 24px;
+            padding: 14px 20px;
+            color: #1c1e21;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: #ff7b00;
+            box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.2);
+        }
+
+        .comment-submit {
+            background: #ff7b00;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 14px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-submit:hover {
+            background: #ff6600;
+            transform: translateY(-2px);
+        }
+
+        .comment-submit:active {
+            transform: translateY(0);
+        }
+
+        .comment-submit.sending {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .comment-submit.sending i {
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                border-radius: 12px;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+
+            .profile-info {
+                margin-left: 0;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .avatar {
+                align-self: center;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .post-actions {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+        }
+
+        .jump-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ff9a3d, #ff7b00);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(255, 123, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: none;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .jump-button:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 12px 30px rgba(255, 123, 0, 0.7);
+        }
+
+        .jump-button:active {
+            transform: translateY(2px) scale(0.95);
+        }
+
+        .jump-button .icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: transform 0.5s;
+        }
+
+        .jump-button .text {
+            font-size: 10px;
+            letter-spacing: 1px;
+            transition: transform 0.5s;
+        }
+
+        .jump-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                    to bottom right,
+                    rgba(255, 255, 255, 0.2),
+                    rgba(255, 255, 255, 0)
+            );
+            transform: rotate(45deg);
+            animation: shine 4s infinite linear;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 123, 0, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 123, 0, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 123, 0, 0);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+        .comments-section {
+            padding: 20px;
+        }
+
+        .comment {
+            background-color: #f0f2f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: #385898;
+        }
+
+        .comment-time {
+            color: #65676b;
+            font-size: 0.85rem;
+        }
+
+        .ximg {
+            /*width: 100%;*/
+            height: 200px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .ximg:hover {
+            transform: scale(1.02);
+        }
+
+        .comment-content {
+            color: #1c1e21;
+            font-size: 0.95rem;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.3s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .close-btn:hover {
+            color: #f0f2f5;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="recommendation">
+        <div class="recommendation-title">
+            <i class="fas fa-star" style="color: #ff7b00;"></i>
+            <span>Recommended</span>
+        </div>
+    </div>
+
+    <div class="profile-section">
+        <img src="../img/xiaoba.png" alt="XIAOBA" class="avatar">
+        <div class="profile-info">
+            <div class="username">XIAOBA</div>
+            <div class="bio">"I just wanted to help a friend, but I ended up being used as a tool."</div>
+        </div>
+    </div>
+
+    <div class="post">
+        <div class="post-header">
+            <div class="post-title">Memo</div>
+            <div class="post-time">September 12, 2025 at 11:47 PM</div>
+        </div>
+
+        <div class="post-content">
+            "I only wanted to help a friend. But somehow, I ended up as the punchline of a joke. On camera, they see a 'hero'. Off camera, all I felt was indifference. That was the moment it hit me— I was never the main character in this story. I was just a prop, something to be used, and tossed aside whenever convenient."
+        </div>
+
+        <div class="post-actions">
+            <button class="action-btn"><i class="far fa-heart"></i> Like</button>
+            <button class="action-btn"><i class="far fa-comment"></i> Comment</button>
+            <button class="action-btn"><i class="far fa-bookmark"></i>Collect</button>
+            <button class="action-btn"><i class="fas fa-share"></i> Share</button>
+        </div>
+
+        <div class="comments">
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@Aaaa</span>
+                    <span class="comment-time">5 min ago · 124 likes</span>
+                </div>
+                <img class="ximg" src="../img/xb.jpg" alt="">
+                <div class="comment-content">"So dramatic." / "Didn't you agree to act in it yourself?"</div>
+            </div>
+
+            <div id="imageModal" class="modal">
+                <span class="close-btn">&times;</span>
+                <img class="modal-content" id="modalImage">
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@Bobb</span>
+                    <span class="comment-time">3 min ago · 89 likes</span>
+                </div>
+                <div class="comment-content">"What, you went along with it and now you're playing the victim? Seriously?"</div>
+            </div>
+
+            <div class="new-comment">
+                <div class="comment-form">
+                    <input type="text" class="comment-input" placeholder="Add a comment..." id="commentInput">
+                    <button class="comment-submit" id="commentSubmit">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="Usagi.html">
+    <button class="jump-button" id="jumpBtn">
+        <div class="text">Updating</div>
+    </button>
+</a>
+
+<script>
+    // 点赞功能
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('.fa-heart')) {
+                this.querySelector('.fa-heart').classList.toggle('far');
+                this.querySelector('.fa-heart').classList.toggle('fas');
+
+                if (this.querySelector('.fa-heart').classList.contains('fas')) {
+                    this.classList.add('active');
+                    this.querySelector('.fa-heart').style.color = '#ff7b00';
+                } else {
+                    this.classList.remove('active');
+                    this.querySelector('.fa-heart').style.color = '';
+                }
+            }
+
+            if (this.querySelector('.fa-bookmark')) {
+                this.querySelector('.fa-bookmark').classList.toggle('far');
+                this.querySelector('.fa-bookmark').classList.toggle('fas');
+
+                if (this.querySelector('.fa-bookmark').classList.contains('fas')) {
+                    this.classList.add('active');
+                    this.querySelector('.fa-bookmark').style.color = '#ff7b00';
+                } else {
+                    this.classList.remove('active');
+                    this.querySelector('.fa-bookmark').style.color = '';
+                }
+            }
+        });
+    });
+
+
+
+    // 评论提交功能
+    const commentInput = document.getElementById('commentInput');
+    const commentSubmit = document.getElementById('commentSubmit');
+
+    commentSubmit.addEventListener('click', function() {
+        if (commentInput.value.trim() !== '') {
+
+                // 创建新评论
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-user">@New User</span>
+                        <span class="comment-time">Just now</span>
+                    </div>
+                    <div class="comment-content">${commentInput.value}</div>
+                `;
+
+                // 添加到评论列表开头
+                const commentsContainer = document.querySelector('.comments');
+                commentsContainer.insertBefore(newComment, commentsContainer.querySelector('.new-comment'));
+
+                // 清空输入框
+                commentInput.value = '';
+
+                // 恢复按钮状态
+                this.classList.remove('sending');
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+        }
+    });
+
+    // 按Enter键提交评论
+    commentInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            commentSubmit.click();
+        }
+    });
+
+    // 获取所有图片和模态框元素
+    const images = document.querySelectorAll('.ximg');
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close-btn');
+
+    // 为每个图片添加点击事件
+    images.forEach(img => {
+        img.addEventListener('click', function() {
+            modal.style.display = 'flex';
+            modalImg.src = this.src;
+            modalImg.alt = this.alt;
+        });
+    });
+
+    // 关闭按钮点击事件
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // 点击模态框背景关闭
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // 按ESC键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

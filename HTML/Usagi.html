@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usagi</title>
+    <link rel="stylesheet" href="../CSS/fontawesome-free-6.4.0-web/css/all.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            padding-left: 150px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 4px 8px rgba(255, 123, 0, 0.2);
+        }
+
+        .username {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .bio {
+            color: #666;
+            margin-top: 5px;
+            font-size: 15px;
+        }
+
+        .post {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .post-time {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            color: #444;
+            font-size: 16px;
+        }
+
+        /* 媒体区域布局 */
+        .media-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .media-left, .media-right {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .media-left {
+            background: linear-gradient(45deg, #ff9a3d, #ff7b00);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .media-right {
+            background: #333;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .media-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .media-right:hover img {
+            opacity: 0.9;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 123, 0, 0.85);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-button:hover {
+            background: rgba(255, 123, 0, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            color: #ff7b00;
+            background-color: #fff5eb;
+        }
+
+        .action-btn.active {
+            color: #ff7b00;
+        }
+
+        .comments {
+            margin-top: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .comments.expanded {
+            max-height: 1000px;
+        }
+
+        .comment {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            animation: fadeIn 0.5s ease;
+            border-left: 3px solid #ff7b00;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: #ff7b00;
+        }
+
+        .comment-content {
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .new-comment {
+            margin-top: 20px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 12px 18px;
+            color: #333;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: #ff7b00;
+        }
+
+        .comment-submit {
+            background: #ff7b00;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .comment-submit:hover {
+            background: #ff6600;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .stat {
+            text-align: center;
+            background: #fff5eb;
+            padding: 8px 15px;
+            border-radius: 8px;
+            min-width: 80px;
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff7b00;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #888;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 95%;
+                padding: 10px;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .media-container {
+                flex-direction: column;
+            }
+
+            .media-left, .media-right {
+                min-width: 100%;
+            }
+
+            .post-actions {
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                padding: 6px 8px;
+                font-size: 14px;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+        }
+        .jump-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ff9a3d, #ff7b00);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(255, 123, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: none;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .jump-button.updating .icon {
+            animation: spin 1.5s linear infinite;
+        }
+        .jump-button:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 12px 30px rgba(255, 123, 0, 0.7);
+        }
+
+        .jump-button:active {
+            transform: translateY(2px) scale(0.95);
+        }
+
+        .jump-button .icon {
+            font-size: 22px;
+            margin-bottom: 5px;
+            transition: transform 0.5s;
+        }
+
+        .jump-button .text {
+            font-size: 10px;
+            letter-spacing: 1px;
+            transition: transform 0.5s;
+        }
+
+        .jump-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                    to bottom right,
+                    rgba(255, 255, 255, 0.2),
+                    rgba(255, 255, 255, 0)
+            );
+            transform: rotate(45deg);
+            animation: shine 4s infinite linear;
+        }
+
+        .jump-button.updating {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            box-shadow: 0 8px 25px rgba(0, 176, 155, 0.5);
+        }
+
+        .jump-button.updating:hover {
+            box-shadow: 0 12px 30px rgba(0, 176, 155, 0.7);
+        }
+
+        .jump-button.updating .icon {
+            animation: spin 1.2s infinite linear, pulseIcon 1.5s infinite alternate;
+        }
+
+        .jump-button.updating .text {
+            animation: colorShift 2s infinite alternate;
+        }
+
+    </style>
+
+
+</head>
+<body>
+<header>
+    <div class="profile-header">
+        <div class="profile-info">
+            <img src="../img/head.jpg" alt="用户头像" class="avatar">
+            <div>
+                <h1 class="username">Usagi</h1>
+                <p class="bio">I'm not a hero or a victim, I'm just the one behind the camera.</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">2,044</div>
+                        <div class="stat-label">Fans</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">427</div>
+                        <div class="stat-label">Content</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">185</div>
+                        <div class="stat-label">Follow</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="post">
+        <div class="post-header">
+            <div class="post-title">Latest Updates</div>
+            <div class="post-time">Today 20:35pm</div>
+        </div>
+        <div class="post-content">
+            <p>I'm not a hero or a victim, I'm just the one behind the camera.</p>
+        </div>
+
+        <!-- 左右媒体区域 -->
+        <div class="media-container">
+            <div class="media-left" style="background:none; width: 80%;height:550px">
+                    <video src="../img/usigi.mp4" width="100%" height="550" controls></video>
+            </div>
+        </div>
+
+
+        <div class="post-actions">
+            <button class="action-btn"><i class="far fa-heart"></i>Likes</button>
+            <button class="action-btn toggle-comments"><i class="far fa-comment"></i>Comment</button>
+            <button class="action-btn"><i class="far fa-bookmark"></i>Collect</button>
+            <button class="action-btn"><i class="fas fa-share"></i>Share</button>
+        </div>
+
+        <div class="comments">
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@although_but</span>
+                    <span class="comment-time">1m • 57 likes</span>
+                </div>
+                <div class="comment-content">Although I hate staged stuff too, aren't you betraying a friend? You
+                    could've talked to him in private--why post it?
+                </div>
+            </div>
+
+
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@cocheaside1</span>
+                    <span class="comment-time">2m • 12 likes</span>
+                </div>
+                <div class="comment-content">Waiting for the platform's statement. If they keep the award, that's on
+                    them.
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@timeline_guy</span>
+                    <span class="comment-time">4m • 15 likes</span>
+                </div>
+                <div class="comment-content">I'll.DR: What "hero" video -- staged hints found -- OP posts evidence
+                    workflow -- public fact check reports
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@pixin.com</span>
+                    <span class="comment-time">5m</span>
+                </div>
+                <div class="comment-content">If this was staged for a "hero" narrative, the platform should revoke any
+                    award and attach a correction. Transparency matters
+                </div>
+            </div>
+
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-user">@Usagi.com</span>
+                    <span class="comment-time">11m</span>
+                </div>
+                <div class="comment-content">
+                    <video src="../img/plan.MP3" controls width="100%" height="60"></video>
+                    <div style="width:160px;display: flex;justify-content: space-between;align-items: center"><i class="fas fa-comment-slash"></i><p>Comment closed</p></div>
+
+                </div>
+            </div>
+
+            <div class="new-comment">
+                <div class="comment-form">
+                    <input type="text" class="comment-input" placeholder="Add Comment...">
+                    <button class="comment-submit">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="Chii2.html">
+<button class="jump-button" id="jumpBtn">
+    <div class="text">Updating</div>
+</button>
+</a>
+<script>
+    // 点赞功能
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('.fa-heart')) {
+                this.querySelector('.fa-heart').classList.toggle('far');
+                this.querySelector('.fa-heart').classList.toggle('fas');
+
+                if (this.querySelector('.fa-heart').classList.contains('fas')) {
+                    this.classList.add('active');
+                    this.querySelector('.fa-heart').style.color = '#ff7b00';
+                } else {
+                    this.classList.remove('active');
+                    this.querySelector('.fa-heart').style.color = '';
+                }
+            }
+
+            if (this.querySelector('.fa-bookmark')) {
+                this.querySelector('.fa-bookmark').classList.toggle('far');
+                this.querySelector('.fa-bookmark').classList.toggle('fas');
+
+                if (this.querySelector('.fa-bookmark').classList.contains('fas')) {
+                    this.classList.add('active');
+                    this.querySelector('.fa-bookmark').style.color = '#ff7b00';
+                } else {
+                    this.classList.remove('active');
+                    this.querySelector('.fa-bookmark').style.color = '';
+                }
+            }
+        });
+    });
+
+    // 评论提交功能
+    document.querySelector('.comment-submit').addEventListener('click', function () {
+        const commentInput = document.querySelector('.comment-input');
+        if (commentInput.value.trim() !== '') {
+            // 创建新评论
+            const newComment = document.createElement('div');
+            newComment.className = 'comment';
+            newComment.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-user">@New User</span>
+                        <span class="comment-time">Just now</span>
+                    </div>
+                    <div class="comment-content">${commentInput.value}</div>
+                `;
+
+            // 添加到评论列表开头
+            document.querySelector('.comments').prepend(newComment);
+
+            // 清空输入框
+            commentInput.value = '';
+
+            // 自动展开评论区域
+            document.querySelector('.comments').classList.add('expanded');
+            document.querySelector('.toggle-comments').innerHTML = '<i class="far fa-comment"></i> 收起评论';
+        }
+    });
+
+    // 评论展开/收起功能
+    const toggleButton = document.querySelector('.toggle-comments');
+    const commentsSection = document.querySelector('.comments');
+
+    toggleButton.addEventListener('click', function () {
+        commentsSection.classList.toggle('expanded');
+
+        if (commentsSection.classList.contains('expanded')) {
+            this.innerHTML = '<i class="far fa-comment"></i> Hide comments';
+        } else {
+            this.innerHTML = '<i class="far fa-comment"></i> Comments';
+        }
+    });
+
+</script>
+</body>
+</html>
