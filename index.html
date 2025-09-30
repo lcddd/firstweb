@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The story of Rice and vegetable roll superman</title>
+    <link rel="stylesheet" href="CSS/fontawesome-free-6.4.0-web/css/all.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 15px;
+        }
+
+        .main-container {
+            width: 95%;
+            max-width: 1600px;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            padding: 70px 50px 40px;
+            background: linear-gradient(to right, #FF8C42, #FF6B6B);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><circle cx="50" cy="50" r="40" fill="white"/></svg>');
+            background-size: 200px;
+            opacity: 0.1;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: radial-gradient(ellipse at center, rgba(255,154,61,0.5) 0%, rgba(255,154,61,0) 70%);
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-icon {
+            display: inline-block;
+            margin: 0 20px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFD166, #FF9E6D);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .title-icon::before {
+            content: "🍙";
+            font-size: 45px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .title-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: ripple 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.6rem;
+            opacity: 0.95;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .divider {
+            height: 5px;
+            width: 150px;
+            background: rgba(255, 255, 255, 0.7);
+            margin: 30px auto;
+            border-radius: 3px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 内容区域布局 */
+        .content-container {
+            padding: 80px 60px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .posters-section {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .story-section {
+            flex: 1;
+            min-width: 400px;
+        }
+
+        /* 海报样式 - 增大尺寸 */
+        .poster-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+            transition: all 0.6s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .poster-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .poster-container:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .poster-main {
+            height: 475px; /* 增大海报高度 */
+            background: linear-gradient(135deg, #FFD8BE 0%, #FFB76B 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            color: #7c4a00;
+            text-align: center;
+            position: relative;
+        }
+
+        .poster-secondary {
+            height: 450px; /* 增大海报高度 */
+            background: linear-gradient(135deg, #FFEEDD 0%, #FFD8BE 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #7c4a00;
+            text-align: center;
+        }
+
+        .poster-icon {
+            font-size: 5.5rem; /* 增大图标 */
+            margin-bottom: 35px;
+            color: #FF8C00;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .poster-title {
+            font-size: 2.5rem; /* 增大标题 */
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #FF6B00;
+        }
+
+        .poster-text {
+            font-size: 1.4rem; /* 增大文字 */
+            line-height: 1.7;
+            max-width: 400px;
+        }
+
+        .poster-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #FF6B00;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        /* 故事内容样式 */
+        .story-content {
+            background: #FFF9F0;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .story-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 100%;
+            background: linear-gradient(to bottom, #FF8C42, #FF6B6B);
+        }
+
+        .story-text {
+            font-size: 1.35rem;
+            line-height: 1.9;
+            color: #444;
+        }
+
+        .story-text p {
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .story-text p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .clickable-link {
+            color: #FF6B00;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            display: inline-block;
+            padding: 0 2px;
+        }
+
+        .clickable-link::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #FF6B00;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .clickable-link:hover {
+            color: #FF4500;
+        }
+
+        .clickable-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .campaign-highlight {
+            background: linear-gradient(to right, rgba(255,154,61,0.15), rgba(255,107,107,0.15));
+            border-left: 6px solid #FF6B6B;
+            padding: 30px 35px;
+            margin: 35px 0;
+            border-radius: 0 18px 18px 0;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .campaign-highlight.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+            font-size: 1.1rem;
+            background: #f8f8f8;
+            border-top: 1px solid #eee;
+        }
+
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes ripple {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+        }
+
+        /* 装饰元素 */
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            color: #FF8C00;
+            z-index: 0;
+        }
+
+        .icon-1 {
+            top: 20%;
+            left: 5%;
+            font-size: 7rem;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .icon-2 {
+            bottom: 15%;
+            right: 5%;
+            font-size: 6rem;
+            animation: float 9s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(5deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .content-container {
+                flex-direction: column;
+                gap: 50px;
+            }
+
+            .posters-section {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .poster-container {
+                flex: 1;
+                min-width: 350px;
+            }
+
+            .title {
+                font-size: 3.5rem;
+            }
+
+            .title-icon {
+                width: 70px;
+                height: 70px;
+                margin: 0 15px;
+            }
+
+            .title-icon::before {
+                font-size: 40px;
+            }
+
+            .title-icon::after {
+                width: 80px;
+                height: 80px;
+            }
+
+            .subtitle {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                width: 97%;
+            }
+
+            .header {
+                padding: 50px 30px 30px;
+            }
+
+            .content-container {
+                padding: 60px 30px 30px;
+            }
+
+            .poster-main {
+                height: 500px;
+            }
+
+            .poster-secondary {
+                height: 380px;
+            }
+
+            .story-content {
+                padding: 40px;
+            }
+
+            .title {
+                font-size: 3rem;
+            }
+
+            .title-icon {
+                width: 60px;
+                height: 60px;
+                margin: 0 12px;
+            }
+
+            .title-icon::before {
+                font-size: 35px;
+            }
+
+            .title-icon::after {
+                width: 70px;
+                height: 70px;
+            }
+
+            .poster-title {
+                font-size: 2rem;
+            }
+
+            .poster-text {
+                font-size: 1.2rem;
+            }
+
+            .story-text {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .main-container {
+                width: 100%;
+                border-radius: 20px;
+            }
+
+            .header {
+                padding: 40px 25px 20px;
+            }
+
+            .content-container {
+                padding: 40px 25px 25px;
+            }
+
+            .poster-main {
+                height: 450px;
+                padding: 30px;
+            }
+
+            .poster-secondary {
+                height: 350px;
+                padding: 30px;
+            }
+
+            .story-content {
+                padding: 30px 25px;
+            }
+
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .title-icon {
+                width: 50px;
+                height: 50px;
+                margin: 0 10px;
+            }
+
+            .title-icon::before {
+                font-size: 30px;
+            }
+
+            .title-icon::after {
+                width: 60px;
+                height: 60px;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .poster-title {
+                font-size: 1.8rem;
+            }
+
+            .poster-text {
+                font-size: 1.1rem;
+            }
+
+            .story-text {
+                font-size: 1.1rem;
+            }
+
+            .poster-icon {
+                font-size: 4.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="header">
+        <h1 class="title">The story of Rice and vegetable roll superman </h1>
+        <span class="title-icon"></span>
+        <div class="divider"></div>
+    </div>
+
+    <div class="content-container">
+        <div class="posters-section">
+            <div class="poster-container">
+                <div class="poster-main">
+                    <img src="img/banner.png" height="420" width="100%"/>
+                </div>
+            </div>
+
+            <div class="poster-container">
+                <div class="poster-secondary">
+                    <img src="img/banner1.png" height="420" width="100%"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-section">
+            <div class="story-content">
+                <i class="floating-icon fas fa-cloud icon-1"></i>
+                <i class="floating-icon fas fa-heart icon-2"></i>
+
+                <div class="story-text">
+                    <p>Long ago, he was just an ordinary volunteer.</p>
+                    <p>In schools and neighborhoods, he reached out to help again and again.</p>
+                    <p>People began to call him — "Onigiri Hero."</p>
+                    <p>As time went by, he became more than a person.</p>
+                    <p>He turned into a symbol,</p>
+                    <p>appearing in ads and public service videos,</p>
+                    <p>reminding everyone: courage and kindness live in everyday life.</p>
+
+                    <div class="campaign-highlight">
+                        <p>Today, the "A Little Bit of Courage" campaign carries on his spirit.</p>
+                        <p>Anyone can share their memories of helping others —</p>
+                        <p>whether it's supporting a classmate who stumbled,</p>
+                        <p>or caring for an injured animal.</p>
+                    </div>
+
+                    <p>The most heartfelt stories will be chosen,</p>
+                    <p>and their storytellers will earn the chance to take a photo</p>
+                    <p>with Onigiri Hero himself.</p>
+                    <p>Because —</p>
+                    <p><span class="clickable-link" onclick="window.location.href='./HTML/Chii.html'">everyone can be a hero in someone's eyes.</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="footer">
+        <p></p>
+    </div>
+</div>
+
+<script>
+    // 使用Intersection Observer API检测元素是否进入视口
+    document.addEventListener('DOMContentLoaded', function() {
+        // 观察海报元素
+        const posterContainers = document.querySelectorAll('.poster-container');
+        const campaignHighlight = document.querySelector('.campaign-highlight');
+        const storyParagraphs = document.querySelectorAll('.story-text p');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // 观察所有需要动画的元素
+        posterContainers.forEach(poster => {
+            observer.observe(poster);
+        });
+
+        observer.observe(campaignHighlight);
+
+        storyParagraphs.forEach(paragraph => {
+            observer.observe(paragraph);
+        });
+
+        // 添加滚动时的轻微视差效果
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.poster-container, .floating-icon');
+
+            parallaxElements.forEach(elem => {
+                const speed = 0.35;
+                elem.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
